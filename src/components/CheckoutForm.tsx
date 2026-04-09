@@ -27,27 +27,15 @@ export function CheckoutForm({ productId, price }: CheckoutFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          shipping,
-          payment_method: paymentMethod,
-          product_id: productId,
-          quantity: 1,
-        }),
+        body: JSON.stringify({ email, shipping, payment_method: paymentMethod, product_id: productId, quantity: 1 }),
       })
-
       const data = await res.json()
-
-      if (data.url) {
-        window.location.href = data.url
-      } else if (data.error) {
-        alert(data.error)
-      }
+      if (data.url) window.location.href = data.url
+      else if (data.error) alert(data.error)
     } catch {
       alert('Une erreur est survenue. Veuillez reessayer.')
     } finally {
@@ -55,97 +43,99 @@ export function CheckoutForm({ productId, price }: CheckoutFormProps) {
     }
   }
 
-  const inputClass = 'w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition'
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '12px 16px',
+    borderRadius: 12,
+    border: '1px solid var(--color-border)',
+    background: 'var(--color-bg)',
+    color: 'var(--color-text)',
+    outline: 'none',
+    fontSize: 14,
+    fontFamily: "'Satoshi', sans-serif",
+    transition: 'border-color 0.2s',
+  }
+
+  const labelStyle: React.CSSProperties = {
+    display: 'block',
+    fontSize: 13,
+    fontWeight: 500,
+    color: 'var(--color-text-muted)',
+    marginBottom: 6,
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Email */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="votre@email.fr"
-          className={inputClass}
-        />
+        <label style={labelStyle}>Email</label>
+        <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
+          placeholder="votre@email.fr" style={inputStyle}
+          onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+          onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
       </div>
 
-      {/* Adresse de livraison */}
+      {/* Adresse */}
       <div className="space-y-4">
-        <h3 className="font-semibold text-gray-900">Adresse de livraison</h3>
+        <h3 className="font-display font-semibold" style={{ color: 'var(--color-text)' }}>Adresse de livraison</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Prenom</label>
-            <input
-              type="text"
-              required
-              value={shipping.first_name}
+            <label style={labelStyle}>Prenom</label>
+            <input type="text" required value={shipping.first_name}
               onChange={e => setShipping(s => ({ ...s, first_name: e.target.value }))}
-              className={inputClass}
-            />
+              style={inputStyle}
+              onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+              onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
-            <input
-              type="text"
-              required
-              value={shipping.last_name}
+            <label style={labelStyle}>Nom</label>
+            <input type="text" required value={shipping.last_name}
               onChange={e => setShipping(s => ({ ...s, last_name: e.target.value }))}
-              className={inputClass}
-            />
+              style={inputStyle}
+              onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+              onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
-          <input
-            type="text"
-            required
-            value={shipping.address}
+          <label style={labelStyle}>Adresse</label>
+          <input type="text" required value={shipping.address}
             onChange={e => setShipping(s => ({ ...s, address: e.target.value }))}
-            className={inputClass}
-          />
+            style={inputStyle}
+            onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+            onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Complement (optionnel)</label>
-          <input
-            type="text"
-            value={shipping.address2}
+          <label style={labelStyle}>Complement (optionnel)</label>
+          <input type="text" value={shipping.address2}
             onChange={e => setShipping(s => ({ ...s, address2: e.target.value }))}
-            className={inputClass}
-          />
+            style={inputStyle}
+            onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+            onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Code postal</label>
-            <input
-              type="text"
-              required
-              value={shipping.postal_code}
+            <label style={labelStyle}>Code postal</label>
+            <input type="text" required value={shipping.postal_code}
               onChange={e => setShipping(s => ({ ...s, postal_code: e.target.value }))}
-              className={inputClass}
-            />
+              style={inputStyle}
+              onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+              onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ville</label>
-            <input
-              type="text"
-              required
-              value={shipping.city}
+            <label style={labelStyle}>Ville</label>
+            <input type="text" required value={shipping.city}
               onChange={e => setShipping(s => ({ ...s, city: e.target.value }))}
-              className={inputClass}
-            />
+              style={inputStyle}
+              onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+              onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Pays</label>
-            <select
-              value={shipping.country}
+            <label style={labelStyle}>Pays</label>
+            <select value={shipping.country}
               onChange={e => setShipping(s => ({ ...s, country: e.target.value }))}
-              className={inputClass}
-            >
+              style={inputStyle}>
               <option value="FR">France</option>
               <option value="BE">Belgique</option>
               <option value="CH">Suisse</option>
@@ -154,66 +144,51 @@ export function CheckoutForm({ productId, price }: CheckoutFormProps) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Telephone</label>
-            <input
-              type="tel"
-              required
-              value={shipping.phone}
+            <label style={labelStyle}>Telephone</label>
+            <input type="tel" required value={shipping.phone}
               onChange={e => setShipping(s => ({ ...s, phone: e.target.value }))}
-              placeholder="+33 6 12 34 56 78"
-              className={inputClass}
-            />
+              placeholder="+33 6 12 34 56 78" style={inputStyle}
+              onFocus={e => e.currentTarget.style.borderColor = 'var(--color-accent)'}
+              onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'} />
           </div>
         </div>
       </div>
 
-      {/* Methode de paiement */}
+      {/* Paiement */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-gray-900">Moyen de paiement</h3>
+        <h3 className="font-display font-semibold" style={{ color: 'var(--color-text)' }}>Moyen de paiement</h3>
         <div className="grid grid-cols-2 gap-4">
-          <button
-            type="button"
-            onClick={() => setPaymentMethod('stripe')}
-            className={`p-4 rounded-xl border-2 transition text-center ${
-              paymentMethod === 'stripe'
-                ? 'border-brand-600 bg-brand-50'
-                : 'border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            <CreditCard className="w-6 h-6 mx-auto mb-1 text-gray-700" />
-            <span className="text-sm font-medium">Carte bancaire</span>
+          <button type="button" onClick={() => setPaymentMethod('stripe')}
+            className="p-4 rounded-xl transition-all duration-200 text-center"
+            style={{
+              border: paymentMethod === 'stripe' ? '2px solid var(--color-accent)' : '1px solid var(--color-border)',
+              background: paymentMethod === 'stripe' ? 'rgba(79,110,255,0.08)' : 'var(--color-bg)',
+              boxShadow: paymentMethod === 'stripe' ? '0 0 20px var(--color-accent-glow)' : 'none',
+            }}>
+            <CreditCard className="w-6 h-6 mx-auto mb-1" style={{ color: 'var(--color-text)' }} />
+            <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Carte bancaire</span>
           </button>
-          <button
-            type="button"
-            onClick={() => setPaymentMethod('paypal')}
-            className={`p-4 rounded-xl border-2 transition text-center ${
-              paymentMethod === 'paypal'
-                ? 'border-brand-600 bg-brand-50'
-                : 'border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            <span className="text-xl font-bold text-[#003087]">Pay</span>
-            <span className="text-xl font-bold text-[#009cde]">Pal</span>
+          <button type="button" onClick={() => setPaymentMethod('paypal')}
+            className="p-4 rounded-xl transition-all duration-200 text-center"
+            style={{
+              border: paymentMethod === 'paypal' ? '2px solid var(--color-accent)' : '1px solid var(--color-border)',
+              background: paymentMethod === 'paypal' ? 'rgba(79,110,255,0.08)' : 'var(--color-bg)',
+              boxShadow: paymentMethod === 'paypal' ? '0 0 20px var(--color-accent-glow)' : 'none',
+            }}>
+            <span className="text-xl font-bold" style={{ color: '#003087' }}>Pay</span>
+            <span className="text-xl font-bold" style={{ color: '#009cde' }}>Pal</span>
             <br />
-            <span className="text-sm font-medium text-gray-700">PayPal</span>
+            <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>PayPal</span>
           </button>
         </div>
       </div>
 
       {/* Submit */}
-      <button
-        type="submit"
-        disabled={loading}
-        className="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
-        ) : (
-          `Payer ${(price / 100).toFixed(2)} EUR`
-        )}
+      <button type="submit" disabled={loading} className="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : `Payer ${(price / 100).toFixed(2)} EUR`}
       </button>
 
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-xs text-center" style={{ color: 'var(--color-text-muted)' }}>
         Paiement 100% securise. Vos donnees sont protegees par chiffrement SSL.
       </p>
     </form>

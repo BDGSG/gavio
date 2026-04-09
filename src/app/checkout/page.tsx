@@ -20,70 +20,70 @@ async function getProduct(): Promise<Product | null> {
 
 export default async function CheckoutPage() {
   const product = await getProduct()
-
-  // Fallback si pas de produit en BDD
   const productId = product?.id || 'demo'
-  const productName = product?.name || 'Produit Gavio'
-  const productPrice = product?.price || 4990
+  const productName = product?.name || 'Gavio MagCharge 3-en-1'
+  const productPrice = product?.price || 3990
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 lg:py-12">
+    <div className="min-h-screen pt-20 pb-12" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Formulaire */}
           <div className="lg:col-span-3">
-            <div className="card p-6 sm:p-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-6">Finaliser ma commande</h1>
+            <div className="p-6 sm:p-8 rounded-2xl" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+              <h1 className="font-display text-2xl font-bold mb-6" style={{ color: 'var(--color-text)' }}>
+                Finaliser ma commande
+              </h1>
               <CheckoutForm productId={productId} price={productPrice} />
             </div>
           </div>
 
-          {/* Recap commande */}
+          {/* Recap */}
           <div className="lg:col-span-2">
-            <div className="card p-6 sticky top-24">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Recapitulatif</h2>
+            <div className="p-6 rounded-2xl sticky top-24" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+              <h2 className="font-display text-lg font-semibold mb-4" style={{ color: 'var(--color-text)' }}>
+                Recapitulatif
+              </h2>
 
-              <div className="flex items-center gap-4 pb-4 border-b border-gray-100">
-                <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center text-xs font-bold text-gray-400">
-                  GAVIO
+              <div className="flex items-center gap-4 pb-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                  <span className="font-display text-xs font-bold" style={{ color: 'var(--color-accent)' }}>GAVIO</span>
                 </div>
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900">{productName}</p>
-                  <p className="text-sm text-gray-500">Quantite : 1</p>
+                  <p className="font-medium text-sm" style={{ color: 'var(--color-text)' }}>{productName}</p>
+                  <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Quantite : 1</p>
                 </div>
-                <p className="font-semibold">{formatPrice(productPrice)}</p>
+                <p className="font-display font-semibold" style={{ color: 'var(--color-accent)' }}>{formatPrice(productPrice)}</p>
               </div>
 
               <div className="py-4 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Sous-total</span>
-                  <span>{formatPrice(productPrice)}</span>
+                  <span style={{ color: 'var(--color-text-muted)' }}>Sous-total</span>
+                  <span style={{ color: 'var(--color-text)' }}>{formatPrice(productPrice)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Livraison</span>
-                  <span className="text-green-600 font-medium">Gratuite</span>
+                  <span style={{ color: 'var(--color-text-muted)' }}>Livraison</span>
+                  <span className="font-medium" style={{ color: 'var(--color-success, #34d399)' }}>Gratuite</span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-gray-100 flex justify-between">
-                <span className="text-lg font-bold">Total</span>
-                <span className="text-lg font-bold text-brand-700">{formatPrice(productPrice)}</span>
+              <div className="pt-4 flex justify-between" style={{ borderTop: '1px solid var(--color-border)' }}>
+                <span className="font-display text-lg font-bold" style={{ color: 'var(--color-text)' }}>Total</span>
+                <span className="font-display text-lg font-bold" style={{ color: 'var(--color-accent)' }}>{formatPrice(productPrice)}</span>
               </div>
 
-              {/* Trust */}
+              {/* Trust badges */}
               <div className="mt-6 space-y-3">
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <Shield className="w-4 h-4 text-green-500 flex-shrink-0" />
-                  Paiement 100% securise (SSL)
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <Truck className="w-4 h-4 text-brand-500 flex-shrink-0" />
-                  Livraison gratuite sous 5-10 jours
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <RotateCcw className="w-4 h-4 text-brand-500 flex-shrink-0" />
-                  Retour gratuit sous 14 jours
-                </div>
+                {[
+                  { icon: Shield, text: 'Paiement 100% securise (SSL)', color: '#34d399' },
+                  { icon: Truck, text: 'Livraison gratuite sous 5-10 jours', color: 'var(--color-accent)' },
+                  { icon: RotateCcw, text: 'Retour gratuit sous 14 jours', color: 'var(--color-accent)' },
+                ].map(({ icon: Icon, text, color }) => (
+                  <div key={text} className="flex items-center gap-3 text-sm" style={{ color: 'var(--color-text-muted)' }}>
+                    <Icon className="w-4 h-4 flex-shrink-0" style={{ color }} />
+                    {text}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
