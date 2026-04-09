@@ -64,7 +64,7 @@ export default async function HomePage() {
           className="absolute inset-0 w-full h-full object-cover"
           poster={product.images[0] || undefined}
         >
-          <source src="https://tempfile.aiquickdraw.com/r/432b2ae04ab265a18e3592401693a2e5_1775765748_kddjq9zn.mp4" type="video/mp4" />
+          <source src="https://nk4oso8o0k48wcc0w4o40kog.coolify.inkora.art/download-seedance/hero" type="video/mp4" />
         </video>
 
         {/* Overlay gradient */}
