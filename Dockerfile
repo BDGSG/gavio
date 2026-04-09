@@ -1,35 +1,30 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
 
-# Install ALL dependencies (including devDependencies for build)
-FROM base AS deps
 WORKDIR /app
+
+# Copy source
 COPY package.json package-lock.json* ./
 RUN npm ci
 
-# Build
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Build
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# Production
-FROM base AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+# Prepare standalone
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs && \
+    cp -r .next/standalone/. /app/standalone/ && \
+    cp -r .next/static /app/standalone/.next/static && \
+    cp -r public /app/standalone/public && \
+    chown -R nextjs:nodejs /app/standalone
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
+WORKDIR /app/standalone
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV NODE_ENV=production
 
 CMD ["node", "server.js"]
