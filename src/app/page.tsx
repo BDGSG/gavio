@@ -4,13 +4,12 @@ import { Reviews } from '../components/Reviews'
 import { HowItWorks } from '../components/HowItWorks'
 import { FAQ } from '../components/FAQ'
 import { ProductSchema } from '../components/ProductSchema'
-import { Zap, Battery, Smartphone, Briefcase, Shield, Sparkles } from 'lucide-react'
+import { Zap, Smartphone, Briefcase, Battery, Shield, Sparkles } from 'lucide-react'
 import { supabaseAdmin } from '../lib/supabase'
 import type { Product } from '../types'
 
 const PRODUCT_TAGLINE = 'Chargez tout. Un seul geste.'
 
-// Produit par defaut (fallback avant insertion en BDD)
 const defaultProduct: Product = {
   id: 'demo',
   name: 'Gavio MagCharge 3-en-1',
@@ -54,116 +53,143 @@ export default async function HomePage() {
   const product = await getProduct()
 
   return (
-    <>
-      {/* SEO Schema */}
+    <div className="grain">
       <ProductSchema product={product} />
 
-      {/* Video Hero */}
-      <section className="relative bg-gray-950 overflow-hidden">
+      {/* ======= CINEMATIC VIDEO HERO ======= */}
+      <section className="relative h-[90vh] overflow-hidden flex items-center justify-center">
+        {/* Video background */}
         <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-[50vh] lg:h-[60vh] object-cover opacity-80"
+          autoPlay loop muted playsInline
+          className="absolute inset-0 w-full h-full object-cover"
           poster={product.images[0] || undefined}
         >
           <source src="https://nk4oso8o0k48wcc0w4o40kog.coolify.inkora.art/download/hero" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-16 text-white">
-          <h2 className="text-2xl lg:text-4xl font-bold mb-2">{PRODUCT_TAGLINE}</h2>
-          <p className="text-lg text-gray-300">Decouvrez le MagCharge en action</p>
+
+        {/* Overlay gradient */}
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(to bottom, rgba(6,6,10,0.3) 0%, rgba(6,6,10,0.6) 50%, rgba(6,6,10,0.95) 100%)',
+        }} />
+
+        {/* Content */}
+        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+          <div className="animate-fade-up">
+            <span className="inline-block font-mono text-xs tracking-[0.3em] uppercase px-4 py-2 rounded-full mb-8"
+              style={{ background: 'rgba(79,110,255,0.1)', border: '1px solid rgba(79,110,255,0.3)', color: 'var(--color-accent)' }}>
+              Nouveau — MagCharge 3-en-1
+            </span>
+          </div>
+          <h1 className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] animate-fade-up delay-200">
+            {PRODUCT_TAGLINE.split('.')[0]}.
+            <br />
+            <span style={{ color: 'var(--color-accent)' }}>{PRODUCT_TAGLINE.split('.')[1]?.trim() || ''}</span>
+          </h1>
+          <p className="mt-6 text-lg sm:text-xl max-w-2xl mx-auto animate-fade-up delay-400" style={{ color: 'var(--color-text-muted)' }}>
+            Rechargez iPhone, Apple Watch et AirPods simultanement.<br className="hidden sm:block" />
+            Un design pliable qui tient dans votre poche.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-up delay-500">
+            <BuyButton price={product.price} stock={product.stock} variant="large" />
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 rounded-full flex items-start justify-center pt-2" style={{ border: '2px solid var(--color-border)' }}>
+            <div className="w-1 h-2 rounded-full" style={{ background: 'var(--color-accent)' }} />
+          </div>
         </div>
       </section>
 
-      {/* Hero */}
+      {/* ======= GLOW SEPARATOR ======= */}
+      <div className="glow-line opacity-50" />
+
+      {/* ======= PRODUCT HERO (details) ======= */}
       <ProductHero product={product} />
 
-      {/* CTA sticky mobile */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 p-4 shadow-2xl">
+      {/* ======= MOBILE STICKY CTA ======= */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 p-4 backdrop-blur-xl"
+        style={{ background: 'rgba(6,6,10,0.9)', borderTop: '1px solid var(--color-border)' }}>
         <BuyButton price={product.price} stock={product.stock} />
       </div>
 
-      {/* Desktop CTA */}
-      <section className="hidden lg:block py-8">
-        <div className="max-w-md mx-auto px-4">
-          <BuyButton price={product.price} stock={product.stock} />
-        </div>
-      </section>
-
-      {/* Features */}
-      <section id="features" className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Un chargeur, trois appareils, zero cable
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-b from-brand-50 to-white">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-brand-100 flex items-center justify-center">
-                <Zap className="w-7 h-7 text-brand-600" />
+      {/* ======= FEATURES ======= */}
+      <section id="features" className="py-24" style={{ background: 'var(--color-surface)' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--color-accent)' }}>Specifications</span>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3">
+              Un chargeur, trois appareils, zero cable
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: Zap, title: 'Charge rapide 15W', desc: 'Technologie Qi2 certifiee. Rechargez votre iPhone 50% plus vite qu\'avec un chargeur classique.' },
+              { icon: Briefcase, title: 'Ultra-compact & pliable', desc: 'Se plie a plat en 2 secondes. Parfait pour le bureau, la table de nuit ou le voyage.' },
+              { icon: Smartphone, title: '3 appareils en 1', desc: 'iPhone + Apple Watch + AirPods charges en meme temps. Un seul cable USB-C suffit.' },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="group p-8 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+                style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-shadow duration-300"
+                  style={{ background: 'rgba(79,110,255,0.1)', border: '1px solid rgba(79,110,255,0.2)' }}>
+                  <Icon className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
+                </div>
+                <h3 className="font-display text-lg font-semibold mb-3">{title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>{desc}</p>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Charge rapide 15W</h3>
-              <p className="text-gray-600">Technologie Qi2 certifiee. Rechargez votre iPhone 50% plus vite qu'avec un chargeur classique.</p>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-b from-brand-50 to-white">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-brand-100 flex items-center justify-center">
-                <Briefcase className="w-7 h-7 text-brand-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Ultra-compact & pliable</h3>
-              <p className="text-gray-600">Se plie a plat en 2 secondes. Parfait pour le bureau, la table de nuit ou le voyage.</p>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-b from-brand-50 to-white">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-brand-100 flex items-center justify-center">
-                <Smartphone className="w-7 h-7 text-brand-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">3 appareils en 1</h3>
-              <p className="text-gray-600">iPhone + Apple Watch + AirPods charges en meme temps. Un seul cable USB-C suffit.</p>
-            </div>
+            ))}
           </div>
 
-          {/* Avantages supplementaires */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
-              <Battery className="w-5 h-5 text-brand-600 flex-shrink-0" />
-              <span className="text-sm text-gray-700">Protection surcharge intelligente</span>
-            </div>
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
-              <Shield className="w-5 h-5 text-brand-600 flex-shrink-0" />
-              <span className="text-sm text-gray-700">Certifie CE, FCC, RoHS</span>
-            </div>
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
-              <Sparkles className="w-5 h-5 text-brand-600 flex-shrink-0" />
-              <span className="text-sm text-gray-700">Finition soft-touch premium</span>
-            </div>
+          {/* Extra badges */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8">
+            {[
+              { icon: Battery, label: 'Protection surcharge' },
+              { icon: Shield, label: 'Certifie CE, FCC, RoHS' },
+              { icon: Sparkles, label: 'Finition soft-touch premium' },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-3 px-5 py-3.5 rounded-xl"
+                style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <Icon className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
+                <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>{label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* ======= HOW IT WORKS ======= */}
       <HowItWorks />
 
-      {/* Reviews */}
+      {/* ======= REVIEWS ======= */}
       <Reviews />
 
-      {/* FAQ */}
+      {/* ======= FAQ ======= */}
       <FAQ />
 
-      {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-brand-600 to-brand-800 text-white">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Simplifiez votre bureau. Chargez tout en un geste.
+      {/* ======= FINAL CTA ======= */}
+      <section className="relative py-32 overflow-hidden">
+        {/* Glow background */}
+        <div className="absolute inset-0" style={{
+          background: 'radial-gradient(ellipse at 50% 50%, var(--color-accent-glow), transparent 70%)',
+        }} />
+        <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold leading-tight">
+            Simplifiez votre bureau.
+            <br />
+            <span style={{ color: 'var(--color-accent)' }}>Chargez tout en un geste.</span>
           </h2>
-          <p className="text-lg text-brand-100 mb-8">
-            Rejoignez des centaines de clients satisfaits. Livraison offerte en France et retour gratuit sous 14 jours.
+          <p className="mt-6 text-lg" style={{ color: 'var(--color-text-muted)' }}>
+            Livraison offerte en France. Retour gratuit sous 14 jours.
           </p>
-          <BuyButton price={product.price} stock={product.stock} />
+          <div className="mt-10">
+            <BuyButton price={product.price} stock={product.stock} variant="large" />
+          </div>
         </div>
       </section>
 
-      {/* Padding bottom pour le CTA mobile sticky */}
+      {/* Mobile bottom padding */}
       <div className="lg:hidden h-24" />
-    </>
+    </div>
   )
 }

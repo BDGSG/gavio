@@ -6,45 +6,48 @@ import { Star, Shield, Truck, RotateCcw } from 'lucide-react'
 import { formatPrice } from '../lib/utils'
 import type { Product } from '../types'
 
-interface ProductHeroProps {
-  product: Product
-}
-
-export function ProductHero({ product }: ProductHeroProps) {
+export function ProductHero({ product }: { product: Product }) {
   const [selectedImage, setSelectedImage] = useState(0)
 
   return (
-    <section id="product" className="py-12 lg:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+    <section id="product" className="pt-24 pb-16 lg:pt-32 lg:pb-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Images */}
           <div className="space-y-4">
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50">
+            <div className="relative aspect-square rounded-2xl overflow-hidden animate-fade-up" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
               {product.images.length > 0 ? (
                 <Image
                   src={product.images[selectedImage]}
                   alt={product.name}
                   fill
-                  className="object-cover"
+                  className="object-contain p-8 transition-all duration-500"
                   priority
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-300">
-                  <span className="text-6xl">GAVIO</span>
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="font-display text-6xl font-bold" style={{ color: 'var(--color-border)' }}>GAVIO</span>
                 </div>
               )}
+              {/* Glow effect behind image */}
+              <div className="absolute inset-0 opacity-30" style={{
+                background: 'radial-gradient(circle at 50% 50%, var(--color-accent-glow), transparent 70%)',
+              }} />
             </div>
             {product.images.length > 1 && (
-              <div className="flex gap-3">
-                {product.images.map((img, i) => (
+              <div className="flex gap-2 overflow-x-auto pb-2 animate-fade-up delay-200">
+                {product.images.slice(0, 6).map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
-                    className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition ${
-                      selectedImage === i ? 'border-brand-600' : 'border-transparent'
-                    }`}
+                    className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all duration-300"
+                    style={{
+                      border: selectedImage === i ? '2px solid var(--color-accent)' : '1px solid var(--color-border)',
+                      background: 'var(--color-surface)',
+                      boxShadow: selectedImage === i ? '0 0 15px var(--color-accent-glow)' : 'none',
+                    }}
                   >
-                    <Image src={img} alt="" fill className="object-cover" />
+                    <Image src={img} alt="" fill className="object-contain p-1" />
                   </button>
                 ))}
               </div>
@@ -53,44 +56,56 @@ export function ProductHero({ product }: ProductHeroProps) {
 
           {/* Details */}
           <div className="flex flex-col justify-center">
-            <div className="flex items-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-              ))}
-              <span className="ml-2 text-sm text-gray-500">4.8/5 (127 avis)</span>
+            {/* Badge */}
+            <div className="animate-fade-up">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wider"
+                style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-gold)' }}>
+                BESTSELLER 2026
+              </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
+            {/* Rating */}
+            <div className="flex items-center gap-1.5 mt-5 animate-fade-up delay-100">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              ))}
+              <span className="ml-2 text-sm" style={{ color: 'var(--color-text-muted)' }}>4.8/5 — 127 avis</span>
+            </div>
+
+            {/* Title */}
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mt-4 leading-[1.1] animate-fade-up delay-200">
               {product.name}
             </h1>
 
-            <p className="mt-4 text-lg text-gray-600 leading-relaxed">
+            {/* Description */}
+            <p className="mt-5 text-lg leading-relaxed animate-fade-up delay-300" style={{ color: 'var(--color-text-muted)' }}>
               {product.description}
             </p>
 
-            {/* Prix */}
-            <div className="mt-6 flex items-baseline gap-4">
-              <span className="text-4xl font-bold text-brand-700">
+            {/* Price */}
+            <div className="mt-8 flex items-baseline gap-4 animate-fade-up delay-400">
+              <span className="font-display text-5xl font-bold" style={{ color: 'var(--color-accent)' }}>
                 {formatPrice(product.price)}
               </span>
               {product.compare_price > 0 && (
-                <span className="text-xl text-gray-400 line-through">
-                  {formatPrice(product.compare_price)}
-                </span>
-              )}
-              {product.compare_price > 0 && (
-                <span className="px-3 py-1 bg-red-50 text-red-600 text-sm font-semibold rounded-full">
-                  -{Math.round((1 - product.price / product.compare_price) * 100)}%
-                </span>
+                <>
+                  <span className="text-xl line-through" style={{ color: 'var(--color-text-muted)' }}>
+                    {formatPrice(product.compare_price)}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-sm font-bold"
+                    style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444' }}>
+                    -{Math.round((1 - product.price / product.compare_price) * 100)}%
+                  </span>
+                </>
               )}
             </div>
 
             {/* Features */}
             {product.features.length > 0 && (
-              <ul className="mt-6 space-y-2">
+              <ul className="mt-8 space-y-3 animate-fade-up delay-500">
                 {product.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3 text-gray-700">
-                    <span className="mt-1 w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
+                  <li key={i} className="flex items-start gap-3 text-sm" style={{ color: 'var(--color-text-muted)' }}>
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--color-accent)' }} />
                     {feature}
                   </li>
                 ))}
@@ -98,19 +113,18 @@ export function ProductHero({ product }: ProductHeroProps) {
             )}
 
             {/* Trust badges */}
-            <div className="mt-8 grid grid-cols-3 gap-4">
-              <div className="flex flex-col items-center text-center p-3 rounded-xl bg-gray-50">
-                <Truck className="w-6 h-6 text-brand-600 mb-1" />
-                <span className="text-xs font-medium text-gray-700">Livraison gratuite</span>
-              </div>
-              <div className="flex flex-col items-center text-center p-3 rounded-xl bg-gray-50">
-                <Shield className="w-6 h-6 text-brand-600 mb-1" />
-                <span className="text-xs font-medium text-gray-700">Paiement securise</span>
-              </div>
-              <div className="flex flex-col items-center text-center p-3 rounded-xl bg-gray-50">
-                <RotateCcw className="w-6 h-6 text-brand-600 mb-1" />
-                <span className="text-xs font-medium text-gray-700">Retour 14 jours</span>
-              </div>
+            <div className="mt-10 grid grid-cols-3 gap-3 animate-fade-up delay-600">
+              {[
+                { icon: Truck, label: 'Livraison offerte' },
+                { icon: Shield, label: 'Paiement securise' },
+                { icon: RotateCcw, label: 'Retour 14 jours' },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex flex-col items-center text-center p-3 rounded-xl"
+                  style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+                  <Icon className="w-5 h-5 mb-1.5" style={{ color: 'var(--color-accent)' }} />
+                  <span className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
