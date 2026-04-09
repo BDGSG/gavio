@@ -2,9 +2,11 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy source
+# Copy source - force install ALL deps (Coolify injects NODE_ENV=production via ARG)
 COPY package.json package-lock.json* ./
+ENV NODE_ENV=development
 RUN npm ci
+ENV NODE_ENV=production
 
 COPY . .
 
