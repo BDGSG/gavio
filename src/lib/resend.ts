@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import type { Order, Product } from '@/types'
+import type { Order, Product } from '../types'
 
 const resend = new Resend(process.env.RESEND_API_KEY!)
 const FROM_EMAIL = process.env.FROM_EMAIL || 'Gavio <noreply@gavio.fr>'

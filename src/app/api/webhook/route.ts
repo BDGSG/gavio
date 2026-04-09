@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { stripe, STRIPE_WEBHOOK_SECRET } from '@/lib/stripe'
-import { supabaseAdmin } from '@/lib/supabase'
-import { createOrder as createCJOrder } from '@/lib/cjdropshipping'
-import { sendOrderConfirmation } from '@/lib/resend'
+import { stripe, STRIPE_WEBHOOK_SECRET } from '../../../lib/stripe'
+import { supabaseAdmin } from '../../../lib/supabase'
+import { createOrder as createCJOrder } from '../../../lib/cjdropshipping'
+import { sendOrderConfirmation } from '../../../lib/resend'
 import type Stripe from 'stripe'
 
 export async function POST(req: NextRequest) {

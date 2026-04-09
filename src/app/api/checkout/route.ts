@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
-import { createPayPalOrder } from '@/lib/paypal'
-import { supabaseAdmin } from '@/lib/supabase'
-import type { CheckoutData } from '@/types'
+import { stripe } from '../../../lib/stripe'
+import { createPayPalOrder } from '../../../lib/paypal'
+import { supabaseAdmin } from '../../../lib/supabase'
+import type { CheckoutData } from '../../../types'
 
 export async function POST(req: NextRequest) {
   try {

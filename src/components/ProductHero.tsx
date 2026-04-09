@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Star, Shield, Truck, RotateCcw } from 'lucide-react'
-import { formatPrice } from '@/lib/utils'
-import type { Product } from '@/types'
+import { formatPrice } from '../lib/utils'
+import type { Product } from '../types'
 
 interface ProductHeroProps {
   product: Product

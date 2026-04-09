@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { CreditCard, Loader2 } from 'lucide-react'
-import type { ShippingAddress } from '@/types'
+import type { ShippingAddress } from '../types'
 
 interface CheckoutFormProps {
   productId: string

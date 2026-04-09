@@ -1,12 +1,12 @@
-import { ProductHero } from '@/components/ProductHero'
-import { BuyButton } from '@/components/BuyButton'
-import { Reviews } from '@/components/Reviews'
-import { HowItWorks } from '@/components/HowItWorks'
-import { FAQ } from '@/components/FAQ'
-import { ProductSchema } from '@/components/ProductSchema'
+import { ProductHero } from '../components/ProductHero'
+import { BuyButton } from '../components/BuyButton'
+import { Reviews } from '../components/Reviews'
+import { HowItWorks } from '../components/HowItWorks'
+import { FAQ } from '../components/FAQ'
+import { ProductSchema } from '../components/ProductSchema'
 import { Zap, Battery, Smartphone, Briefcase, Shield, Sparkles } from 'lucide-react'
-import { supabaseAdmin } from '@/lib/supabase'
-import type { Product } from '@/types'
+import { supabaseAdmin } from '../lib/supabase'
+import type { Product } from '../types'
 
 // Produit par defaut (fallback avant insertion en BDD)
 const defaultProduct: Product = {

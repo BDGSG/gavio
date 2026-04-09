@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { ShoppingBag } from 'lucide-react'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice } from '../lib/utils'
 
 interface BuyButtonProps {
   price: number

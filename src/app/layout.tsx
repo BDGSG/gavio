@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
+import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 
 export const metadata: Metadata = {
   title: 'Gavio MagCharge 3-en-1 — Chargeur Sans Fil Magnetique Pliable',

@@ -1,4 +1,4 @@
-import type { CJOrderRequest, CJOrderResponse, CJTrackingResponse } from '@/types'
+import type { CJOrderRequest, CJOrderResponse, CJTrackingResponse } from '../types'
 
 const CJ_API_KEY = process.env.CJ_API_KEY!
 const CJ_BASE_URL = 'https://developers.cjdropshipping.com/api2.0/v1'

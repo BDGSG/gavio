@@ -6,8 +6,8 @@ import {
   RefreshCw, ArrowUpRight, ArrowDownRight, Eye, ShoppingBag,
   BarChart3, Activity, Calendar, Filter
 } from 'lucide-react'
-import { formatPrice, formatDate } from '@/lib/utils'
-import type { Order } from '@/types'
+import { formatPrice, formatDate } from '../../lib/utils'
+import type { Order } from '../../types'
 
 // ============================================
 // GAVIO ADMIN DASHBOARD

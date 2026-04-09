@@ -1,8 +1,8 @@
-import { CheckoutForm } from '@/components/CheckoutForm'
+import { CheckoutForm } from '../../components/CheckoutForm'
 import { Shield, Truck, RotateCcw } from 'lucide-react'
-import { supabaseAdmin } from '@/lib/supabase'
-import { formatPrice } from '@/lib/utils'
-import type { Product } from '@/types'
+import { supabaseAdmin } from '../../lib/supabase'
+import { formatPrice } from '../../lib/utils'
+import type { Product } from '../../types'
 
 async function getProduct(): Promise<Product | null> {
   try {

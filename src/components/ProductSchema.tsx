@@ -1,4 +1,4 @@
-import type { Product } from '@/types'
+import type { Product } from '../types'
 
 export function ProductSchema({ product }: { product: Product }) {
   const schema = {

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
-import { getTracking } from '@/lib/cjdropshipping'
-import { sendTrackingEmail } from '@/lib/resend'
+import { supabaseAdmin } from '../../../lib/supabase'
+import { getTracking } from '../../../lib/cjdropshipping'
+import { sendTrackingEmail } from '../../../lib/resend'
 
 // Cron endpoint : met a jour le tracking de toutes les commandes en cours
 // Appeler via cron externe (Coolify cron ou n8n) toutes les 4h
