@@ -7,21 +7,21 @@ async function getAccessToken(): Promise<string> {
   const res = await fetch(`${CJ_BASE_URL}/authentication/getAccessToken`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: process.env.CJ_EMAIL, password: process.env.CJ_PASSWORD }),
+    body: JSON.stringify({ apiKey: CJ_API_KEY }),
   })
   const data = await res.json()
   if (!data.result) throw new Error(`CJ Auth failed: ${data.message}`)
   return data.data.accessToken
 }
 
-// Cache token (expire apres 1h)
+// Cache token (expire apres 14 jours, on refresh a 12j)
 let cachedToken: string | null = null
 let tokenExpiry = 0
 
 async function getToken(): Promise<string> {
   if (cachedToken && Date.now() < tokenExpiry) return cachedToken
   cachedToken = await getAccessToken()
-  tokenExpiry = Date.now() + 55 * 60 * 1000 // 55min
+  tokenExpiry = Date.now() + 12 * 24 * 60 * 60 * 1000 // 12 jours
   return cachedToken
 }
 
