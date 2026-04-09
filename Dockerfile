@@ -23,10 +23,15 @@ RUN addgroup --system --gid 1001 nodejs && \
     chown -R nextjs:nodejs /app/standalone
 
 WORKDIR /app/standalone
+
+# Copy start script with cron
+COPY start.sh /app/standalone/start.sh
+RUN chmod +x /app/standalone/start.sh
+
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 ENV NODE_ENV=production
 
-CMD ["node", "server.js"]
+CMD ["sh", "start.sh"]
