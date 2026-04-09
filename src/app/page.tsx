@@ -8,6 +8,8 @@ import { Zap, Battery, Smartphone, Briefcase, Shield, Sparkles } from 'lucide-re
 import { supabaseAdmin } from '../lib/supabase'
 import type { Product } from '../types'
 
+const PRODUCT_TAGLINE = 'Chargez tout. Un seul geste.'
+
 // Produit par defaut (fallback avant insertion en BDD)
 const defaultProduct: Product = {
   id: 'demo',
@@ -55,6 +57,25 @@ export default async function HomePage() {
     <>
       {/* SEO Schema */}
       <ProductSchema product={product} />
+
+      {/* Video Hero */}
+      <section className="relative bg-gray-950 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-[50vh] lg:h-[60vh] object-cover opacity-80"
+          poster={product.images[0] || undefined}
+        >
+          <source src="https://nk4oso8o0k48wcc0w4o40kog.coolify.inkora.art/download/hero" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-16 text-white">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-2">{PRODUCT_TAGLINE}</h2>
+          <p className="text-lg text-gray-300">Decouvrez le MagCharge en action</p>
+        </div>
+      </section>
 
       {/* Hero */}
       <ProductHero product={product} />
